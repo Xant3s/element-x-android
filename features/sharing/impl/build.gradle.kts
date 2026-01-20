@@ -5,7 +5,7 @@
  * Please see LICENSE files in the repository root for full details.
  */
 
-import extension.setupAnvil
+import extension.setupDependencyInjection
 
 plugins {
     id("io.element.android-compose-library")
@@ -15,7 +15,7 @@ android {
     namespace = "io.element.android.features.sharing.impl"
 }
 
-setupAnvil()
+setupDependencyInjection()
 
 dependencies {
     api(project(":features:sharing:api"))

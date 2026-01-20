@@ -28,8 +28,7 @@ interface ShareEntryPoint : FeatureEntryPoint {
     interface Callback : Plugin {
         fun onDone(roomIds: List<RoomId>)
     }
-<<<<<<< HEAD
-=======
+
 
     interface NodeBuilder {
         fun params(params: Params): NodeBuilder
@@ -40,5 +39,4 @@ interface ShareEntryPoint : FeatureEntryPoint {
     companion object {
         const val EXTRA_SHARE_TARGET_ROOM_ID = "io.element.android.features.share.extra.TARGET_ROOM_ID"
     }
->>>>>>> 9f1129c1fd (Add support for Android direct share targets)
 }

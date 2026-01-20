@@ -183,7 +183,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.OPENABLE" />
             </intent-filter>
-        </activity>
+        </activity-alias>
 
         <!-- Direct share target -->
         <activity

@@ -3,9 +3,15 @@ plugins {
     alias(libs.plugins.kotlin.android)
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+    }
+}
+
 android {
     namespace = "io.element.android.features.directshare"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "io.element.android.features.directshare"
@@ -30,9 +36,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+
 }
 
 dependencies {

@@ -8,8 +8,6 @@
 
 import java.net.URI
 
-include(":features:directshare")
-include(":features:sharing")
 pluginManagement {
     repositories {
         includeBuild("plugins")
@@ -18,6 +16,12 @@ pluginManagement {
         mavenCentral()
     }
 }
+
+
+
+include(":features:directshare")
+include(":features:sharing")
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {

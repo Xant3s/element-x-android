@@ -57,12 +57,10 @@ dependencies {
     implementation(libs.haze)
     implementation(libs.haze.materials)
     implementation(projects.features.reportroom.api)
-<<<<<<< HEAD
     implementation(projects.features.rolesandpermissions.api)
     implementation(projects.libraries.previewutils)
-=======
     implementation(project(":features:sharing:api"))
->>>>>>> 9f1129c1fd (Add support for Android direct share targets)
+    implementation(libs.kotlinx.collections.immutable)
     api(projects.features.home.api)
 
     testCommonDependencies(libs, true)

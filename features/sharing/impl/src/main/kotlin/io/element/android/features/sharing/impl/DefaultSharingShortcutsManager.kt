@@ -20,17 +20,16 @@ import androidx.core.graphics.drawable.IconCompat
 import coil3.ImageLoader
 import coil3.imageLoader
 import coil3.request.ImageRequest
-import com.squareup.anvil.annotations.ContributesBinding
 import io.element.android.features.sharing.api.SharingRoomInfo
 import io.element.android.features.sharing.api.SharingShortcutsManager
 import io.element.android.libraries.di.AppScope
-import io.element.android.libraries.di.ApplicationContext
+import io.element.android.libraries.di.annotations.ApplicationContext
 import io.element.android.libraries.di.SingleIn
 import io.element.android.libraries.designsystem.components.avatar.AvatarData
 import io.element.android.libraries.designsystem.components.avatar.AvatarSize
 import kotlinx.collections.immutable.ImmutableList
 import java.security.MessageDigest
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 // @ContributesBinding(AppScope::class)
 // @SingleIn(AppScope::class)
