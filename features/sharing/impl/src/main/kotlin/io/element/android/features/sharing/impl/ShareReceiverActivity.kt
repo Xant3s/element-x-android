@@ -59,7 +59,10 @@ class ShareReceiverActivity : ComponentActivity() {
 
         if (resolvedRoomId.isNullOrEmpty()) {
             // No room: fall back to opening main UI so the user can pick destination manually.
-            openMainApp(null, null, incoming?.type)
+            // Extract and forward the shared content
+            val text = incoming?.getStringExtra(Intent.EXTRA_TEXT)
+            val uris = extractUris(incoming)
+            openMainApp(text, uris, incoming?.type)
             finish()
             return
         }
@@ -77,7 +80,9 @@ class ShareReceiverActivity : ComponentActivity() {
                 handleSendMultipleStreams(incoming, resolvedRoomId)
             }
             else -> {
-                openMainApp(null, null, incoming?.type)
+                val text = incoming?.getStringExtra(Intent.EXTRA_TEXT)
+                val uris = extractUris(incoming)
+                openMainApp(text, uris, incoming?.type)
             }
         }
 
@@ -103,6 +108,19 @@ class ShareReceiverActivity : ComponentActivity() {
         val uris = intent.getParcelableArrayListExtra<Uri>(Intent.EXTRA_STREAM)
         takePersistablePermissionsIfNeeded(uris)
         forwardToComposer(roomId, null, uris, intent.type)
+    }
+
+    private fun extractUris(intent: Intent?): ArrayList<Uri>? {
+        if (intent == null) return null
+        return when (intent.action) {
+            Intent.ACTION_SEND -> {
+                intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM)?.let { arrayListOf(it) }
+            }
+            Intent.ACTION_SEND_MULTIPLE -> {
+                intent.getParcelableArrayListExtra<Uri>(Intent.EXTRA_STREAM)
+            }
+            else -> null
+        }
     }
 
     private fun takePersistablePermissionsIfNeeded(uris: List<Uri>?) {
