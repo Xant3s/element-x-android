@@ -26,6 +26,8 @@ import io.element.android.features.sharing.api.SharingShortcutsManager
 import io.element.android.libraries.di.AppScope
 import io.element.android.libraries.di.ApplicationContext
 import io.element.android.libraries.di.SingleIn
+import io.element.android.libraries.designsystem.components.avatar.AvatarData
+import io.element.android.libraries.designsystem.components.avatar.AvatarSize
 import kotlinx.collections.immutable.ImmutableList
 import java.security.MessageDigest
 import javax.inject.Inject
@@ -72,7 +74,7 @@ class DefaultSharingShortcutsManager @Inject constructor(
         }
 
         // try to load avatar -> adaptive icon bitmap
-        val icon = room.avatarUrl?.let { loadAvatar(it) }?.let {
+        val icon = room.avatarUrl?.let { loadAvatar(room) }?.let {
             IconCompat.createWithAdaptiveBitmap(it)
         } ?: IconCompat.createWithResource(context, android.R.drawable.sym_def_app_icon) 
 
@@ -94,9 +96,15 @@ class DefaultSharingShortcutsManager @Inject constructor(
             .build()
     }
 
-    private suspend fun loadAvatar(url: String): Bitmap? {
+    private suspend fun loadAvatar(room: SharingRoomInfo): Bitmap? {
+        val avatarData = AvatarData(
+            id = room.roomId,
+            name = room.displayName,
+            url = room.avatarUrl,
+            size = AvatarSize.RoomListItem,
+        )
         val request = ImageRequest.Builder(context)
-            .data(url)
+            .data(avatarData)
             .build()
         // execute() is suspend in Coil 3.x
         val result = imageLoader.execute(request)
