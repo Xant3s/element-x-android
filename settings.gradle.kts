@@ -6,6 +6,10 @@
  * Please see LICENSE files in the repository root for full details.
  */
 
+import java.net.URI
+
+include(":features:directshare")
+include(":features:sharing")
 pluginManagement {
     repositories {
         includeBuild("plugins")

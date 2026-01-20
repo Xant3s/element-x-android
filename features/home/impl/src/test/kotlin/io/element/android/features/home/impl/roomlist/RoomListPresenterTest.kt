@@ -27,7 +27,12 @@ import io.element.android.features.home.impl.search.aRoomListSearchState
 import io.element.android.features.invite.api.SeenInvitesStore
 import io.element.android.features.invite.api.acceptdecline.AcceptDeclineInviteEvents
 import io.element.android.features.invite.api.acceptdecline.AcceptDeclineInviteState
+<<<<<<< HEAD
 import io.element.android.features.invite.api.acceptdecline.anAcceptDeclineInviteState
+=======
+import io.element.android.features.sharing.api.SharingRoomInfo
+import io.element.android.features.sharing.api.SharingShortcutsManager
+>>>>>>> 9f1129c1fd (Add support for Android direct share targets)
 import io.element.android.features.invite.test.InMemorySeenInvitesStore
 import io.element.android.features.leaveroom.api.LeaveRoomEvent
 import io.element.android.features.leaveroom.api.LeaveRoomState
@@ -648,7 +653,11 @@ class RoomListPresenterTest {
         notificationCleaner: NotificationCleaner = FakeNotificationCleaner(),
         appPreferencesStore: AppPreferencesStore = InMemoryAppPreferencesStore(),
         seenInvitesStore: SeenInvitesStore = InMemorySeenInvitesStore(),
+<<<<<<< HEAD
         announcementService: AnnouncementService = FakeAnnouncementService(),
+=======
+        sharingShortcutsManager: SharingShortcutsManager = FakeSharingShortcutsManager(),
+>>>>>>> 9f1129c1fd (Add support for Android direct share targets)
     ) = RoomListPresenter(
         client = client,
         leaveRoomPresenter = { leaveRoomState },
@@ -674,7 +683,16 @@ class RoomListPresenterTest {
         notificationCleaner = notificationCleaner,
         appPreferencesStore = appPreferencesStore,
         seenInvitesStore = seenInvitesStore,
+<<<<<<< HEAD
         announcementService = announcementService,
         coldStartWatcher = FakeAnalyticsColdStartWatcher(),
+=======
+        sharingShortcutsManager = sharingShortcutsManager,
+>>>>>>> 9f1129c1fd (Add support for Android direct share targets)
     )
+}
+
+class FakeSharingShortcutsManager : SharingShortcutsManager {
+    override suspend fun publishShortcutsForRooms(rooms: kotlinx.collections.immutable.ImmutableList<SharingRoomInfo>) {}
+    override fun removeShortcutForRoom(roomId: String) {}
 }
