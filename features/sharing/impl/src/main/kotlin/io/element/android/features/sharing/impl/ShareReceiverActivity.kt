@@ -10,9 +10,7 @@ package io.element.android.features.sharing.impl
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Parcelable
 import androidx.activity.ComponentActivity
-import androidx.core.content.ContextCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import io.element.android.features.share.api.ShareEntryPoint
 
@@ -29,10 +27,10 @@ import io.element.android.features.share.api.ShareEntryPoint
  *   - EXTRA_SHARED_URIS (ArrayList<Uri>)
  */
 class ShareReceiverActivity : ComponentActivity() {
-
     companion object {
         private const val PREFS_NAME = "sharing_shortcuts_prefs"
         private const val PREF_PREFIX = "shareshortcut.room."
+
         // These extras must match what MainActivity expects, or how we route.
         const val EXTRA_TARGET_ROOM_ID = "io.element.android.features.sharing.extra.TARGET_ROOM_ID"
         const val EXTRA_SHARED_TEXT = "io.element.android.features.sharing.extra.SHARED_TEXT"

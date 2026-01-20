@@ -27,13 +27,13 @@ dependencies {
     implementation(projects.libraries.androidutils)
     implementation(projects.libraries.matrix.api)
     implementation(projects.libraries.designsystem) // For tokens/theme if needed, or coil wrappers
-    
+
     implementation(libs.coil)
     implementation(libs.coil.compose)
     implementation(libs.androidx.core)
     implementation(libs.androidx.appcompat) // For ShareReceiverActivity extending ComponentActivity? No, ComponentActivity is in activity-compose
     implementation(libs.androidx.activity.compose)
-    
+
     testImplementation(libs.test.junit)
     testImplementation(libs.test.robolectric)
 }

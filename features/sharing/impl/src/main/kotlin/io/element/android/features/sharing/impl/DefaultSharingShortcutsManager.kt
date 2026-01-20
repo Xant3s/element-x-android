@@ -12,31 +12,25 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
-import coil3.toBitmap
-import android.graphics.drawable.BitmapDrawable
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import coil3.ImageLoader
 import coil3.imageLoader
 import coil3.request.ImageRequest
+import coil3.toBitmap
+import dev.zacsweers.metro.Inject
 import io.element.android.features.sharing.api.SharingRoomInfo
 import io.element.android.features.sharing.api.SharingShortcutsManager
-import io.element.android.libraries.di.AppScope
-import io.element.android.libraries.di.annotations.ApplicationContext
-import io.element.android.libraries.di.SingleIn
 import io.element.android.libraries.designsystem.components.avatar.AvatarData
 import io.element.android.libraries.designsystem.components.avatar.AvatarSize
+import io.element.android.libraries.di.annotations.ApplicationContext
 import kotlinx.collections.immutable.ImmutableList
 import java.security.MessageDigest
-import dev.zacsweers.metro.Inject
 
-// @ContributesBinding(AppScope::class)
-// @SingleIn(AppScope::class)
 class DefaultSharingShortcutsManager @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : SharingShortcutsManager {
-    
     private val imageLoader: ImageLoader get() = context.imageLoader
 
     companion object {
@@ -44,7 +38,7 @@ class DefaultSharingShortcutsManager @Inject constructor(
         private const val PREF_PREFIX = "shareshortcut.room."
         private const val PREFS_NAME = "sharing_shortcuts_prefs"
     }
-    
+
     // We open prefs explicitly to match ShareReceiverActivity's expectations
     private val prefs: SharedPreferences by lazy {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -75,7 +69,7 @@ class DefaultSharingShortcutsManager @Inject constructor(
         // try to load avatar -> adaptive icon bitmap
         val icon = room.avatarUrl?.let { loadAvatar(room) }?.let {
             IconCompat.createWithAdaptiveBitmap(it)
-        } ?: IconCompat.createWithResource(context, android.R.drawable.sym_def_app_icon) 
+        } ?: IconCompat.createWithResource(context, android.R.drawable.sym_def_app_icon)
 
         // store mapping in prefs so ShareReceiverActivity can resolve roomId (no DI required there).
         // Since we are suspension, apply() is fine, or commit() if we want to be sure. apply() is async safe.
@@ -88,10 +82,12 @@ class DefaultSharingShortcutsManager @Inject constructor(
             .setIcon(icon)
             .setCategories(setOf(SHARE_CATEGORY))
             .setLongLived(true) // helpful for caching & ranking
-            .setPerson(androidx.core.app.Person.Builder()
+            .setPerson(
+                androidx.core.app.Person.Builder()
                 .setName(room.displayName)
                 .setKey(room.roomId)
-                .build())
+                .build()
+            )
             .build()
     }
 
@@ -109,12 +105,12 @@ class DefaultSharingShortcutsManager @Inject constructor(
         // execute() is suspend in Coil 3.x
         val result = imageLoader.execute(request)
         val bitmap = result.image?.toBitmap() ?: return null
-        
+
         // Ensure the bitmap is square and properly sized for adaptive icons
         // Android adaptive icons use 108dp (with 72dp safe zone)
         val density = context.resources.displayMetrics.density
         val targetSize = (108 * density).toInt()
-        
+
         // Scale the bitmap to the target size if needed
         return if (bitmap.width != targetSize || bitmap.height != targetSize) {
             Bitmap.createScaledBitmap(bitmap, targetSize, targetSize, true)
@@ -134,7 +130,7 @@ class DefaultSharingShortcutsManager @Inject constructor(
         val md = MessageDigest.getInstance("SHA-256")
         val bytes = md.digest(roomId.toByteArray(Charsets.UTF_8))
         val hex = bytes.joinToString("") { "%02x".format(it) }
-        return "room_" + hex.take(24) 
+        return "room_" + hex.take(24)
     }
 
     private fun safeShortLabel(displayName: String): String {

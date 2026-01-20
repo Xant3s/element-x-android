@@ -19,7 +19,8 @@ pluginManagement {
 
 
 
-include(":features:directshare")
+
+
 include(":features:sharing")
 
 dependencyResolutionManagement {
