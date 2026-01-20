@@ -96,18 +96,31 @@ class DefaultSharingShortcutsManager @Inject constructor(
     }
 
     private suspend fun loadAvatar(room: SharingRoomInfo): Bitmap? {
+        // Android adaptive icons require 108dp - use ShareShortcut size
         val avatarData = AvatarData(
             id = room.roomId,
             name = room.displayName,
             url = room.avatarUrl,
-            size = AvatarSize.RoomListItem,
+            size = AvatarSize.ShareShortcut,
         )
         val request = ImageRequest.Builder(context)
             .data(avatarData)
             .build()
         // execute() is suspend in Coil 3.x
         val result = imageLoader.execute(request)
-        return result.image?.toBitmap()
+        val bitmap = result.image?.toBitmap() ?: return null
+        
+        // Ensure the bitmap is square and properly sized for adaptive icons
+        // Android adaptive icons use 108dp (with 72dp safe zone)
+        val density = context.resources.displayMetrics.density
+        val targetSize = (108 * density).toInt()
+        
+        // Scale the bitmap to the target size if needed
+        return if (bitmap.width != targetSize || bitmap.height != targetSize) {
+            Bitmap.createScaledBitmap(bitmap, targetSize, targetSize, true)
+        } else {
+            bitmap
+        }
     }
 
     override fun removeShortcutForRoom(roomId: String) {

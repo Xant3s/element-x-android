@@ -76,4 +76,7 @@ enum class AvatarSize(val dp: Dp) {
     LeaveSpaceRoom(32.dp),
 
     AccountItem(32.dp),
+
+    // Android adaptive icons require 108dp for proper display
+    ShareShortcut(108.dp),
 }
