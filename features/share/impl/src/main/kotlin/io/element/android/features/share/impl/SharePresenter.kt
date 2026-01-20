@@ -56,9 +56,11 @@ class SharePresenter(
 
     @Composable
     override fun present(): ShareState {
+        val targetRoomId = intent.getStringExtra(ShareEntryPoint.EXTRA_SHARE_TARGET_ROOM_ID)
+        val isDirectShare = targetRoomId != null
+
         LaunchedEffect(Unit) {
             if (shareActionState.value is AsyncAction.Uninitialized) {
-                val targetRoomId = intent.getStringExtra(ShareEntryPoint.EXTRA_SHARE_TARGET_ROOM_ID)
                 if (targetRoomId != null) {
                     onRoomSelected(listOf(RoomId(targetRoomId)))
                 }
@@ -73,6 +75,7 @@ class SharePresenter(
 
         return ShareState(
             shareAction = shareActionState.value,
+            isDirectShare = isDirectShare,
             eventSink = ::handleEvent,
         )
     }
