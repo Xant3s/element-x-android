@@ -12,6 +12,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.os.Build
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
@@ -66,9 +67,14 @@ class DefaultSharingShortcutsManager @Inject constructor(
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
 
-        // try to load avatar -> adaptive icon bitmap
-        val icon = room.avatarUrl?.let { loadAvatar(room) }?.let {
-            IconCompat.createWithAdaptiveBitmap(it)
+        // try to load avatar -> adaptive icon bitmap (API 26+) or legacy bitmap
+        val isAdaptive = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+        val icon = room.avatarUrl?.let { loadAvatar(room, isAdaptive) }?.let {
+            if (isAdaptive) {
+                IconCompat.createWithAdaptiveBitmap(it)
+            } else {
+                IconCompat.createWithBitmap(it)
+            }
         } ?: IconCompat.createWithResource(context, android.R.drawable.sym_def_app_icon)
 
         // store mapping in prefs so ShareReceiverActivity can resolve roomId (no DI required there).
@@ -91,13 +97,15 @@ class DefaultSharingShortcutsManager @Inject constructor(
             .build()
     }
 
-    private suspend fun loadAvatar(room: SharingRoomInfo): Bitmap? {
+    private suspend fun loadAvatar(room: SharingRoomInfo, isAdaptive: Boolean): Bitmap? {
         // Android adaptive icons require 108dp - use ShareShortcut size
+        // Legacy icons use smaller size (CurrentUserTopBar = 32dp) to avoid Binder limits
+        val sizeToken = if (isAdaptive) AvatarSize.ShareShortcut else AvatarSize.CurrentUserTopBar
         val avatarData = AvatarData(
             id = room.roomId,
             name = room.displayName,
             url = room.avatarUrl,
-            size = AvatarSize.ShareShortcut,
+            size = sizeToken,
         )
         val request = ImageRequest.Builder(context)
             .data(avatarData)
@@ -106,14 +114,18 @@ class DefaultSharingShortcutsManager @Inject constructor(
         val result = imageLoader.execute(request)
         val bitmap = result.image?.toBitmap() ?: return null
 
-        // Ensure the bitmap is square and properly sized for adaptive icons
-        // Android adaptive icons use 108dp (with 72dp safe zone)
-        val density = context.resources.displayMetrics.density
-        val targetSize = (108 * density).toInt()
+        return if (isAdaptive) {
+            // Ensure the bitmap is square and properly sized for adaptive icons
+            // Android adaptive icons use 108dp (with 72dp safe zone)
+            val density = context.resources.displayMetrics.density
+            val targetSize = (108 * density).toInt()
 
-        // Scale the bitmap to the target size if needed
-        return if (bitmap.width != targetSize || bitmap.height != targetSize) {
-            Bitmap.createScaledBitmap(bitmap, targetSize, targetSize, true)
+            // Scale the bitmap to the target size if needed
+            if (bitmap.width != targetSize || bitmap.height != targetSize) {
+                Bitmap.createScaledBitmap(bitmap, targetSize, targetSize, true)
+            } else {
+                bitmap
+            }
         } else {
             bitmap
         }
