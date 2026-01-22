@@ -115,6 +115,7 @@ class RoomListPresenter(
                     val shortcuts = topRooms.map { summary ->
                         SharingRoomInfo(
                             roomId = summary.roomId.value,
+                            sessionId = client.sessionId.value,
                             displayName = summary.name ?: summary.roomId.value,
                             avatarUrl = summary.avatarData.url
                         )
