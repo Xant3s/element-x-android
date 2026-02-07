@@ -125,9 +125,9 @@ class DefaultSharingShortcutsManager @Inject constructor(
 
     private fun shortcutIdForRoom(sessionId: String, roomId: String): String {
         fun String.toBase64(): String =
-            Base64.encodeToString(this.toByteArray(Charset.forName("UTF-8")), Base64.NO_WRAP or Base64.URL_SAFE)
+            Base64.encodeToString(this.toByteArray(Charset.forName("UTF-8")), Base64.NO_WRAP)
 
-        return "share_smart_v1_${sessionId.toBase64()}_${roomId.toBase64()}"
+        return "directshare_${sessionId.toBase64()}_${roomId.toBase64()}"
     }
 
     private fun safeShortLabel(displayName: String): String {

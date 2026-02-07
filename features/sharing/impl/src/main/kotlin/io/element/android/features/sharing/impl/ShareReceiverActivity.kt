@@ -32,13 +32,13 @@ class ShareReceiverActivity : ComponentActivity() {
         val type = incoming?.type
 
         val shortcutId = incoming?.getStringExtra(Intent.EXTRA_SHORTCUT_ID)
-        val (resolvedSessionId, resolvedRoomId) = if (shortcutId?.startsWith("share_smart_v1_") == true) {
+        val (resolvedSessionId, resolvedRoomId) = if (shortcutId?.startsWith("directshare_") == true) {
             try {
                 val parts = shortcutId.split("_")
-                val sessionEncoded = parts[3]
-                val roomEncoded = parts[4]
-                val sessionDecoded = String(Base64.decode(sessionEncoded, Base64.NO_WRAP or Base64.URL_SAFE))
-                val roomDecoded = String(Base64.decode(roomEncoded, Base64.NO_WRAP or Base64.URL_SAFE))
+                val sessionEncoded = parts[1]
+                val roomEncoded = parts[2]
+                val sessionDecoded = String(Base64.decode(sessionEncoded, Base64.NO_WRAP))
+                val roomDecoded = String(Base64.decode(roomEncoded, Base64.NO_WRAP))
                 sessionDecoded to roomDecoded
             } catch (e: Exception) {
                 null to null
