@@ -33,6 +33,9 @@ import io.element.android.libraries.matrix.api.core.SessionId
 import android.util.Base64
 import java.nio.charset.Charset
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
 @SingleIn(AppScope::class)
 class DefaultSharingShortcutsManager @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -44,12 +47,14 @@ class DefaultSharingShortcutsManager @Inject constructor(
     }
 
     override suspend fun publishShortcutsForRooms(rooms: List<SharingRoomInfo>) {
-        val shortcuts = rooms.mapNotNull { buildShortcutForRoom(it) }
-        if (shortcuts.isNotEmpty()) {
-            ShortcutManagerCompat.setDynamicShortcuts(context, shortcuts)
-            shortcuts.forEach { ShortcutManagerCompat.pushDynamicShortcut(context, it) }
-        } else {
-             ShortcutManagerCompat.removeAllDynamicShortcuts(context)
+        withContext(Dispatchers.IO) {
+            val shortcuts = rooms.mapNotNull { buildShortcutForRoom(it) }
+            if (shortcuts.isNotEmpty()) {
+                ShortcutManagerCompat.setDynamicShortcuts(context, shortcuts)
+                shortcuts.forEach { ShortcutManagerCompat.pushDynamicShortcut(context, it) }
+            } else {
+                ShortcutManagerCompat.removeAllDynamicShortcuts(context)
+            }
         }
     }
 
