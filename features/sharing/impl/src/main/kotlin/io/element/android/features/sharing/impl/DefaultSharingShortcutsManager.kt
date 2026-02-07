@@ -28,8 +28,6 @@ import io.element.android.features.sharing.api.SharingShortcutsManager
 import io.element.android.libraries.designsystem.components.avatar.AvatarData
 import io.element.android.libraries.designsystem.components.avatar.AvatarSize
 import io.element.android.libraries.di.annotations.ApplicationContext
-import io.element.android.libraries.matrix.api.core.RoomId
-import io.element.android.libraries.matrix.api.core.SessionId
 import android.util.Base64
 import java.nio.charset.Charset
 
