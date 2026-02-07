@@ -47,12 +47,7 @@ class DefaultSharingShortcutsManager @Inject constructor(
     override suspend fun publishShortcutsForRooms(rooms: List<SharingRoomInfo>) {
         withContext(Dispatchers.IO) {
             val shortcuts = rooms.mapNotNull { buildShortcutForRoom(it) }
-            if (shortcuts.isNotEmpty()) {
-                ShortcutManagerCompat.setDynamicShortcuts(context, shortcuts)
-                shortcuts.forEach { ShortcutManagerCompat.pushDynamicShortcut(context, it) }
-            } else {
-                ShortcutManagerCompat.removeAllDynamicShortcuts(context)
-            }
+            ShortcutManagerCompat.setDynamicShortcuts(context, shortcuts)
         }
     }
 
