@@ -12,6 +12,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
+import androidx.core.app.Person
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
@@ -78,10 +79,10 @@ class DefaultSharingShortcutsManager(
             .setCategories(setOf(SHARE_CATEGORY))
             .setLongLived(true)
             .setPerson(
-                androidx.core.app.Person.Builder()
-                .setName(room.displayName)
-                .setKey(createCompositeKey(room.sessionId.value, room.roomId.value))
-                .build()
+                Person.Builder()
+                    .setName(room.displayName)
+                    .setKey(createCompositeKey(room.sessionId.value, room.roomId.value))
+                    .build()
             )
             .build()
     }
