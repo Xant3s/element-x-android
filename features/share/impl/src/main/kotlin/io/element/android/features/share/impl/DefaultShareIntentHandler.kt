@@ -16,6 +16,7 @@ import android.net.Uri
 import androidx.core.content.IntentCompat
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
+import io.element.android.features.share.api.ShareEntryPoint
 import io.element.android.features.share.api.ShareIntentData
 import io.element.android.features.share.api.ShareIntentHandler
 import io.element.android.features.share.api.UriToShare
@@ -29,6 +30,8 @@ import io.element.android.libraries.core.mimetype.MimeTypes.isMimeTypeImage
 import io.element.android.libraries.core.mimetype.MimeTypes.isMimeTypeText
 import io.element.android.libraries.core.mimetype.MimeTypes.isMimeTypeVideo
 import io.element.android.libraries.di.annotations.ApplicationContext
+import io.element.android.libraries.matrix.api.core.RoomId
+import io.element.android.libraries.matrix.api.core.SessionId
 import timber.log.Timber
 
 @ContributesBinding(AppScope::class)
@@ -40,8 +43,10 @@ class DefaultShareIntentHandler(
     ): ShareIntentData? {
         val type = intent.resolveType(context) ?: return null
         val uris = getIncomingUris(intent, type)
+        val directShareSessionId = intent.getStringExtra(ShareEntryPoint.EXTRA_SHARE_TARGET_SESSION_ID)?.let(::SessionId)
+        val directShareRoomId = intent.getStringExtra(ShareEntryPoint.EXTRA_SHARE_TARGET_ROOM_ID)?.let(::RoomId)
         return when {
-            uris.isEmpty() && type == MimeTypes.PlainText -> handlePlainText(intent)
+            uris.isEmpty() && type == MimeTypes.PlainText -> handlePlainText(intent, directShareSessionId, directShareRoomId)
             type.isMimeTypeImage() ||
                 type.isMimeTypeVideo() ||
                 type.isMimeTypeAudio() ||
@@ -50,19 +55,24 @@ class DefaultShareIntentHandler(
                 type.isMimeTypeText() ||
                 type.isMimeTypeAny() -> {
                 ShareIntentData.Uris(
-                    intent = intent,
                     text = intent.getCharSequenceExtra(Intent.EXTRA_TEXT)?.toString()?.takeIf { it.isNotEmpty() },
                     uris = uris,
+                    directShareSessionId = directShareSessionId,
+                    directShareRoomId = directShareRoomId,
                 )
             }
             else -> null
         }
     }
 
-    private fun handlePlainText(intent: Intent): ShareIntentData.PlainText? {
+    private fun handlePlainText(
+        intent: Intent,
+        directShareSessionId: SessionId?,
+        directShareRoomId: RoomId?,
+    ): ShareIntentData.PlainText? {
         val content = intent.getCharSequenceExtra(Intent.EXTRA_TEXT)?.toString()
         return if (content?.isNotEmpty() == true) {
-            ShareIntentData.PlainText(intent, content)
+            ShareIntentData.PlainText(content, directShareSessionId, directShareRoomId)
         } else {
             null
         }

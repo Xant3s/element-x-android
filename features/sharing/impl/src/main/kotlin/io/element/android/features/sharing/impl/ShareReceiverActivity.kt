@@ -132,7 +132,7 @@ class ShareReceiverActivity : ComponentActivity() {
                 putExtra(ShareEntryPoint.EXTRA_SHARE_TARGET_ROOM_ID, roomId)
             }
             if (sessionId != null) {
-                putExtra(SharingConstants.EXTRA_SHARE_TARGET_SESSION_ID, sessionId)
+                putExtra(ShareEntryPoint.EXTRA_SHARE_TARGET_SESSION_ID, sessionId)
             }
             if (!text.isNullOrEmpty()) putExtra(Intent.EXTRA_TEXT, text)
             if (!uris.isNullOrEmpty()) {
