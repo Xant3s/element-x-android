@@ -28,13 +28,6 @@ interface ShareEntryPoint : FeatureEntryPoint {
         fun onDone(roomIds: List<RoomId>)
     }
 
-
-    interface NodeBuilder {
-        fun params(params: Params): NodeBuilder
-        fun callback(callback: Callback): NodeBuilder
-        fun build(): Node
-    }
-
     companion object {
         const val EXTRA_SHARE_TARGET_ROOM_ID = "io.element.android.features.share.extra.TARGET_ROOM_ID"
     }
