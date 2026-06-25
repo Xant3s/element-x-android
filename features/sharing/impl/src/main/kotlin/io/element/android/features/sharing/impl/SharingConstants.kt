@@ -5,7 +5,7 @@
  * Please see LICENSE files in the repository root for full details.
  */
 
-package io.element.android.features.sharing.api
+package io.element.android.features.sharing.impl
 
 object SharingConstants {
     const val EXTRA_SHARE_TARGET_SESSION_ID = "session_id"

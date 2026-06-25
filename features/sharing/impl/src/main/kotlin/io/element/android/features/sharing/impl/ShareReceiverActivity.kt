@@ -14,7 +14,6 @@ import android.util.Base64
 import androidx.activity.ComponentActivity
 import androidx.core.content.pm.ShortcutManagerCompat
 import io.element.android.features.share.api.ShareEntryPoint
-import io.element.android.features.sharing.api.SharingConstants
 
 
 class ShareReceiverActivity : ComponentActivity() {
