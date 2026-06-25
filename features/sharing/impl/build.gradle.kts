@@ -31,6 +31,7 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.coil.compose)
     implementation(libs.androidx.core)
+    implementation(libs.androidx.corektx)
     implementation(libs.androidx.sharetarget)
     implementation(libs.androidx.activity.compose)
 

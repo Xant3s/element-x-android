@@ -16,6 +16,7 @@ import androidx.core.app.Person
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
+import androidx.core.graphics.scale
 import coil3.ImageLoader
 import coil3.imageLoader
 import coil3.request.ImageRequest
@@ -107,7 +108,7 @@ class DefaultSharingShortcutsManager(
 
             // Scale the bitmap to the target size if needed
             if (bitmap.width != targetSize || bitmap.height != targetSize) {
-                Bitmap.createScaledBitmap(bitmap, targetSize, targetSize, true)
+                bitmap.scale(targetSize, targetSize)
             } else {
                 bitmap
             }
