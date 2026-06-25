@@ -42,8 +42,8 @@ import io.element.android.features.invite.api.acceptdecline.AcceptDeclineInviteE
 import io.element.android.features.invite.api.acceptdecline.AcceptDeclineInviteState
 import io.element.android.features.leaveroom.api.LeaveRoomEvent
 import io.element.android.features.leaveroom.api.LeaveRoomState
+import io.element.android.features.sharing.api.DirectShareShortcutsPublisher
 import io.element.android.features.sharing.api.SharingRoomInfo
-import io.element.android.features.sharing.api.SharingShortcutsManager
 import io.element.android.libraries.architecture.AsyncData
 import io.element.android.libraries.architecture.Presenter
 import io.element.android.libraries.featureflag.api.FeatureFlagService
@@ -95,7 +95,7 @@ class RoomListPresenter(
     private val coldStartWatcher: AnalyticsColdStartWatcher,
     private val spaceFiltersPresenter: Presenter<SpaceFiltersState>,
     private val featureFlagService: FeatureFlagService,
-    private val sharingShortcutsManager: SharingShortcutsManager,
+    private val directShareShortcutsPublisher: DirectShareShortcutsPublisher,
 ) : Presenter<RoomListState> {
     private val encryptionService = client.encryptionService
 
@@ -125,7 +125,7 @@ class RoomListPresenter(
                             avatarUrl = summary.avatarData.url ?: summary.heroes.takeIf { summary.isDm }?.firstOrNull { it.id != client.sessionId.value }?.url,
                         )
                     }
-                    sharingShortcutsManager.publishShortcutsForRooms(shortcuts)
+                    directShareShortcutsPublisher.publishShortcutsForRooms(shortcuts)
                 }
         }
 

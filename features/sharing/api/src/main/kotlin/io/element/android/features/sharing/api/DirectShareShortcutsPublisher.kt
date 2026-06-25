@@ -10,7 +10,7 @@ package io.element.android.features.sharing.api
 import io.element.android.libraries.matrix.api.core.RoomId
 import io.element.android.libraries.matrix.api.core.SessionId
 
-interface SharingShortcutsManager {
+interface DirectShareShortcutsPublisher {
     /**
      * Publish shortcuts for the given rooms.
      * Call this from a background coroutine or viewModelScope ideally.
@@ -18,7 +18,7 @@ interface SharingShortcutsManager {
     suspend fun publishShortcutsForRooms(rooms: List<SharingRoomInfo>)
 }
 
-/** Light-weight room descriptor used by the manager. */
+/** Light-weight room descriptor used by the publisher. */
 data class SharingRoomInfo(
     val sessionId: SessionId,
     val roomId: RoomId,

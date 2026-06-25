@@ -24,9 +24,9 @@ import coil3.toBitmap
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.SingleIn
+import io.element.android.features.sharing.api.DirectShareShortcutsPublisher
 import io.element.android.features.sharing.api.SharingConstants
 import io.element.android.features.sharing.api.SharingRoomInfo
-import io.element.android.features.sharing.api.SharingShortcutsManager
 import io.element.android.libraries.designsystem.components.avatar.AvatarData
 import io.element.android.libraries.designsystem.components.avatar.AvatarSize
 import io.element.android.libraries.di.annotations.ApplicationContext
@@ -37,9 +37,9 @@ import kotlinx.coroutines.withContext
 
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
-class DefaultSharingShortcutsManager(
+class DefaultDirectShareShortcutsPublisher(
     @ApplicationContext private val context: Context,
-) : SharingShortcutsManager {
+) : DirectShareShortcutsPublisher {
     private val imageLoader: ImageLoader get() = context.imageLoader
 
     companion object {
