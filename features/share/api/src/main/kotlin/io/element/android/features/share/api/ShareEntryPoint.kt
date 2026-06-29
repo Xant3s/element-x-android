@@ -27,9 +27,4 @@ interface ShareEntryPoint : FeatureEntryPoint {
     interface Callback : Plugin {
         fun onDone(roomIds: List<RoomId>)
     }
-
-    companion object {
-        const val EXTRA_SHARE_TARGET_ROOM_ID = "io.element.android.features.share.extra.TARGET_ROOM_ID"
-        const val EXTRA_SHARE_TARGET_SESSION_ID = "io.element.android.features.share.extra.TARGET_SESSION_ID"
-    }
 }

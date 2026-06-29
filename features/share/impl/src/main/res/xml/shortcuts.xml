@@ -7,7 +7,7 @@
   -->
 
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
-    <share-target android:targetClass="io.element.android.features.sharing.impl.ShareReceiverActivity">
+    <share-target android:targetClass="io.element.android.x.MainActivity">
         <data android:mimeType="text/plain" />
         <data android:mimeType="image/*" />
         <data android:mimeType="video/*" />

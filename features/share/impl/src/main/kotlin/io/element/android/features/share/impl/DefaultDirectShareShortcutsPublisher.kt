@@ -5,9 +5,8 @@
  * Please see LICENSE files in the repository root for full details.
  */
 
-package io.element.android.features.sharing.impl
+package io.element.android.features.share.impl
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -24,13 +23,11 @@ import coil3.toBitmap
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.SingleIn
-import io.element.android.features.sharing.api.DirectShareShortcutsPublisher
-import io.element.android.features.sharing.api.SharingRoomInfo
+import io.element.android.features.share.api.DirectShareShortcutsPublisher
+import io.element.android.features.share.api.SharingRoomInfo
 import io.element.android.libraries.designsystem.components.avatar.AvatarData
 import io.element.android.libraries.designsystem.components.avatar.AvatarSize
 import io.element.android.libraries.di.annotations.ApplicationContext
-import android.util.Base64
-import java.nio.charset.Charset
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -54,11 +51,12 @@ class DefaultDirectShareShortcutsPublisher(
 
     private suspend fun buildShortcutForRoom(room: SharingRoomInfo): ShortcutInfoCompat? {
         val id = shortcutIdForRoom(room.sessionId.value, room.roomId.value)
+        val targetComponent = context.packageManager.getLaunchIntentForPackage(context.packageName)?.component ?: return null
 
-        val baseIntent = Intent(context, ShareReceiverActivity::class.java).apply {
-            action = Intent.ACTION_SEND
-            putExtra(SharingConstants.EXTRA_SHARE_TARGET_ROOM_ID, room.roomId.value)
-            putExtra(SharingConstants.EXTRA_SHARE_TARGET_SESSION_ID, room.sessionId.value)
+        val baseIntent = Intent(Intent.ACTION_SEND).apply {
+            component = targetComponent
+            putExtra(ShareIntentExtras.EXTRA_SHARE_TARGET_ROOM_ID, room.roomId.value)
+            putExtra(ShareIntentExtras.EXTRA_SHARE_TARGET_SESSION_ID, room.sessionId.value)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
 
@@ -121,10 +119,7 @@ class DefaultDirectShareShortcutsPublisher(
     }
 
     private fun shortcutIdForRoom(sessionId: String, roomId: String): String {
-        fun String.toBase64(): String =
-            Base64.encodeToString(this.toByteArray(Charset.forName("UTF-8")), Base64.NO_WRAP)
-
-        return "directshare_${sessionId.toBase64()}_${roomId.toBase64()}"
+        return "directshare_${sessionId}_$roomId"
     }
 
     private fun safeShortLabel(displayName: String): String {

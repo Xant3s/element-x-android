@@ -16,7 +16,6 @@ import android.net.Uri
 import androidx.core.content.IntentCompat
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
-import io.element.android.features.share.api.ShareEntryPoint
 import io.element.android.features.share.api.ShareIntentData
 import io.element.android.features.share.api.ShareIntentHandler
 import io.element.android.features.share.api.UriToShare
@@ -43,8 +42,8 @@ class DefaultShareIntentHandler(
     ): ShareIntentData? {
         val type = intent.resolveType(context) ?: return null
         val uris = getIncomingUris(intent, type)
-        val directShareSessionId = intent.getStringExtra(ShareEntryPoint.EXTRA_SHARE_TARGET_SESSION_ID)?.let(::SessionId)
-        val directShareRoomId = intent.getStringExtra(ShareEntryPoint.EXTRA_SHARE_TARGET_ROOM_ID)?.let(::RoomId)
+        val directShareSessionId = intent.getStringExtra(ShareIntentExtras.EXTRA_SHARE_TARGET_SESSION_ID)?.let(::SessionId)
+        val directShareRoomId = intent.getStringExtra(ShareIntentExtras.EXTRA_SHARE_TARGET_ROOM_ID)?.let(::RoomId)
         return when {
             uris.isEmpty() && type == MimeTypes.PlainText -> handlePlainText(intent, directShareSessionId, directShareRoomId)
             type.isMimeTypeImage() ||

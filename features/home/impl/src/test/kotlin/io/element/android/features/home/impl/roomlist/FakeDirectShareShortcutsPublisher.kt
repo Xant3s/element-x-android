@@ -7,8 +7,8 @@
 
 package io.element.android.features.home.impl.roomlist
 
-import io.element.android.features.sharing.api.DirectShareShortcutsPublisher
-import io.element.android.features.sharing.api.SharingRoomInfo
+import io.element.android.features.share.api.DirectShareShortcutsPublisher
+import io.element.android.features.share.api.SharingRoomInfo
 
 class FakeDirectShareShortcutsPublisher : DirectShareShortcutsPublisher {
     override suspend fun publishShortcutsForRooms(rooms: List<SharingRoomInfo>) {}

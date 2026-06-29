@@ -42,8 +42,8 @@ import io.element.android.features.invite.api.acceptdecline.AcceptDeclineInviteE
 import io.element.android.features.invite.api.acceptdecline.AcceptDeclineInviteState
 import io.element.android.features.leaveroom.api.LeaveRoomEvent
 import io.element.android.features.leaveroom.api.LeaveRoomState
-import io.element.android.features.sharing.api.DirectShareShortcutsPublisher
-import io.element.android.features.sharing.api.SharingRoomInfo
+import io.element.android.features.share.api.DirectShareShortcutsPublisher
+import io.element.android.features.share.api.SharingRoomInfo
 import io.element.android.libraries.architecture.AsyncData
 import io.element.android.libraries.architecture.Presenter
 import io.element.android.libraries.featureflag.api.FeatureFlagService
