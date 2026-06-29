@@ -65,6 +65,7 @@ dependencies {
 
     testCommonDependencies(libs, true)
     testImplementation(projects.features.announcement.test)
+    testImplementation(projects.features.share.test)
     testImplementation(projects.features.invite.test)
     testImplementation(projects.features.logout.test)
     testImplementation(projects.features.networkmonitor.test)

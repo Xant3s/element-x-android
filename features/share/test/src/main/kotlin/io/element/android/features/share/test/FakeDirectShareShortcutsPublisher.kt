@@ -5,7 +5,7 @@
  * Please see LICENSE files in the repository root for full details.
  */
 
-package io.element.android.features.home.impl.roomlist
+package io.element.android.features.share.test
 
 import io.element.android.features.share.api.DirectShareShortcutsPublisher
 import io.element.android.features.share.api.SharingRoomInfo
