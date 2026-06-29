@@ -122,7 +122,11 @@ class RoomListPresenter(
                             sessionId = client.sessionId,
                             roomId = summary.roomId,
                             displayName = summary.name ?: summary.roomId.value,
-                            avatarUrl = summary.avatarData.url ?: summary.heroes.takeIf { summary.isDm }?.firstOrNull { it.id != client.sessionId.value }?.url,
+                            avatarUrl = summary.avatarData.url ?: if (summary.isDm) {
+                                summary.heroes.firstOrNull { it.id != client.sessionId.value }?.url
+                            } else {
+                                null
+                            },
                         )
                     }
                     directShareShortcutsPublisher.publishShortcutsForRooms(shortcuts)
