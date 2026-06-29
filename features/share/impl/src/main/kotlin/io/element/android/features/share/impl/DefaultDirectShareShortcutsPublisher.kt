@@ -71,7 +71,7 @@ class DefaultDirectShareShortcutsPublisher(
 
         return ShortcutInfoCompat.Builder(context, id)
             .setShortLabel(safeShortLabel(room.displayName))
-            .setLongLabel("Share to ${room.displayName}")
+            .setLongLabel(context.getString(R.string.common_share_to, room.displayName))
             .setIntent(baseIntent)
             .setIcon(icon)
             .setCategories(setOf(SHARE_CATEGORY))
